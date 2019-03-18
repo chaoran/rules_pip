@@ -7,6 +7,7 @@ import pkg_resources
 import re
 import subprocess
 from os import path
+import pip
 
 from pip._internal import main as pip_main
 from wheel import wheelfile

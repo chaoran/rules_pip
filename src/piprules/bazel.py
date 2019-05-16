@@ -93,6 +93,7 @@ class _PyDistPackageGenerator(object):
                 srcs = ["bin/{entry_point}.py"],
                 deps = [":{library_name}"],
                 visibility = ["//visibility:public"],
+                main = "bin/{entry_point}.py",
             )
             """).lstrip().format(
                 rule="bin-" + ep if ep == self.library_name else ep,

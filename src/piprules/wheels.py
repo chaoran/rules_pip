@@ -9,10 +9,12 @@ import subprocess
 from os import path
 import pip
 
+import pip
 from pip._internal import main as pip_main
 from wheel import wheelfile
 
 from piprules import util
+from piprules import backports
 
 class Error(Exception):
 
@@ -31,7 +33,7 @@ def _check_offline_cache(python_interpreter, cache_directory, build_directory, d
     import_paths = _get_pip_import_paths()
     my_env = os.environ.copy()
     my_env["PYTHONPATH"] = ":".join(import_paths) + ":" + my_env.get("PYTHONPATH", "")
-    result = subprocess.run(
+    returncode, _, _ = backports.run(
         [
             python_interpreter, util.get_import_path_of_module(pip) + "/pip/__main__.py",
             "wheel",
@@ -43,7 +45,7 @@ def _check_offline_cache(python_interpreter, cache_directory, build_directory, d
         env=my_env,
     )
     os.remove(requirements_file_path[:-4] + "_no_hash.txt")
-    if result.returncode != 0:
+    if returncode != 0:
         return False
 
     return True
